@@ -10,7 +10,9 @@ export class EmailService implements EmailClient {
   private transporter: nodemailer.Transporter;
 
   constructor() {
-    if (env.SMTP_HOST) {
+    const useJsonTransport = env.SMTP_TRANSPORT === 'json' || !env.SMTP_HOST;
+
+    if (!useJsonTransport) {
       const transportOptions: any = {
         host: env.SMTP_HOST,
         port: parseInt(env.SMTP_PORT || '587'),
@@ -26,11 +28,13 @@ export class EmailService implements EmailClient {
 
       this.transporter = nodemailer.createTransport(transportOptions);
     } else {
-      // Fallback for development/testing - logs to console
+      // JSON transport: logs the rendered email payload instead of sending it via SMTP
       this.transporter = nodemailer.createTransport({
         jsonTransport: true,
       });
-      console.log('EmailService initialized in JSON transport mode (no SMTP configured)');
+      console.log(
+        'EmailService initialized in JSON transport mode (SMTP_TRANSPORT=json or no SMTP_HOST configured)',
+      );
     }
   }
 

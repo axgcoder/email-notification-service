@@ -11,6 +11,9 @@ const envSchema = z.object({
   SMTP_PORT: z.string().optional(),
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
+  // smtp (default) = real SMTP using SMTP_HOST/SMTP_PORT
+  // json = Nodemailer's jsonTransport (logs email payload to console)
+  SMTP_TRANSPORT: z.enum(['smtp', 'json']).default('smtp'),
 });
 
 export const env = envSchema.parse(process.env);
