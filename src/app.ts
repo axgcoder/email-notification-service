@@ -1,11 +1,14 @@
 import express from 'express';
 import { NotificationController } from './controllers/notificationController';
+import { emailQueueService } from './queue/bullMqService';
 
 const app = express();
 
 app.use(express.json());
 
-app.post('/email', NotificationController.sendEmail);
+const notificationController = new NotificationController(emailQueueService);
+
+app.post('/email', notificationController.sendEmail);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });

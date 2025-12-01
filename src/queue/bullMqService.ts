@@ -1,19 +1,12 @@
-import { Queue, Worker, Job } from 'bullmq';
-import { env } from '../config/env';
-import { emailService } from '../services/emailService';
-import { EmailPayload } from '../utils/validation';
-import { IQueueService } from './queue.interface';
-
-const connection = {
-  host: env.REDIS_HOST,
-  port: parseInt(env.REDIS_PORT),
-};
+import { Queue } from 'bullmq';
+import { EMAIL_QUEUE_NAME, IQueueService } from './queue.interface';
+import { redisConnection } from './queueConfig';
 
 export class BullMqService implements IQueueService {
-  private queue: Queue;
+  private readonly queue: Queue;
 
   constructor() {
-    this.queue = new Queue('email-queue', { connection });
+    this.queue = new Queue(EMAIL_QUEUE_NAME, { connection: redisConnection });
   }
 
   async addJob(name: string, data: any): Promise<void> {
@@ -22,24 +15,3 @@ export class BullMqService implements IQueueService {
 }
 
 export const emailQueueService = new BullMqService();
-
-const worker = new Worker(
-  'email-queue',
-  async (job: Job) => {
-    console.log(`Processing job ${job.id}...`);
-    const data = job.data as EmailPayload;
-    await emailService.sendEmail(data);
-    console.log(`Job ${job.id} completed.`);
-  },
-  { connection },
-);
-
-worker.on('completed', (job: Job) => {
-  console.log(`Job ${job.id} has completed!`);
-});
-
-worker.on('failed', (job: Job | undefined, err: Error) => {
-  console.error(`Job ${job?.id} has failed with ${err.message}`);
-});
-
-export { worker };

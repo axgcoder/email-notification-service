@@ -1,9 +1,12 @@
 import { Request, Response } from 'express';
-import { emailQueueService } from '../queue/bullMqService';
+import { IQueueService, SEND_EMAIL_JOB_NAME } from '../queue/queue.interface';
 import { emailSchema } from '../utils/validation';
 
 export class NotificationController {
-  static async sendEmail(req: Request, res: Response): Promise<void> {
+  constructor(private readonly queueService: IQueueService) {}
+
+  // Use an arrow function to preserve `this` when passed as a handler
+  sendEmail = async (req: Request, res: Response): Promise<void> => {
     try {
       const result = emailSchema.safeParse(req.body);
 
@@ -14,12 +17,12 @@ export class NotificationController {
 
       const { to, subject, text, html } = result.data;
 
-      await emailQueueService.addJob('send-email', { to, subject, text, html });
+      await this.queueService.addJob(SEND_EMAIL_JOB_NAME, { to, subject, text, html });
 
       res.status(202).json({ message: 'Email queued successfully' });
     } catch (error) {
       console.error('Error queuing email:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
-  }
+  };
 }

@@ -2,7 +2,11 @@ import nodemailer from 'nodemailer';
 import { env } from '../config/env';
 import { EmailPayload } from '../utils/validation';
 
-export class EmailService {
+export interface EmailClient {
+  sendEmail(payload: EmailPayload): Promise<void>;
+}
+
+export class EmailService implements EmailClient {
   private transporter: nodemailer.Transporter;
 
   constructor() {
