@@ -29,22 +29,25 @@ The service follows an asynchronous, event-driven architecture to ensure reliabi
 ## Installation
 
 1.  Clone the repository:
+
     ```bash
     git clone https://github.com/axgcoder/email-notification-service.git
     cd notification-service
     ```
 
 2.  Install dependencies:
+
     ```bash
     npm install
     ```
 
 3.  Start the project (this will automatically start Redis and Maildev via Docker):
+
     ```bash
     npm run dev
     ```
 
-    *Note: Ensure Docker is running before executing this command.*
+    _Note: Ensure Docker is running before executing this command._
 
 ## Configuration
 
@@ -54,7 +57,7 @@ The service follows an asynchronous, event-driven architecture to ensure reliabi
     PORT=3000
     REDIS_HOST=localhost
     REDIS_PORT=6379
-    
+
     # SMTP Configuration (Maildev)
     SMTP_HOST=localhost
     SMTP_PORT=1025
@@ -65,13 +68,17 @@ The service follows an asynchronous, event-driven architecture to ensure reliabi
 ## Running the Project
 
 ### Development
+
 Run the server in development mode with hot-reloading:
+
 ```bash
 npm run dev
 ```
 
 ### Production
+
 Build the project and start the production server:
+
 ```bash
 npm run build
 npm start
@@ -80,9 +87,30 @@ npm start
 ## Testing
 
 Run unit tests using Jest:
+
 ```bash
 npm test
+npm test
 ```
+
+## Linting & Formatting
+
+- **Lint**: Check for code quality issues.
+
+  ```bash
+  npm run lint
+  ```
+
+- **Fix Lint Errors**: Automatically fix linting issues.
+
+  ```bash
+  npm run lint:fix
+  ```
+
+- **Format**: Format code using Prettier.
+  ```bash
+  npm run format
+  ```
 
 ## API Documentation
 
@@ -91,6 +119,7 @@ npm test
 Queue an email for sending.
 
 **Request Body:**
+
 ```json
 {
   "to": "user@example.com",
@@ -101,6 +130,7 @@ Queue an email for sending.
 ```
 
 **Response:**
+
 - `202 Accepted`: Email queued successfully.
 - `400 Bad Request`: Validation error.
 
