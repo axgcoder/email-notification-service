@@ -1,0 +1,36 @@
+{
+  "name": "notification-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "services:up": "docker-compose up -d",
+    "services:down": "docker-compose down",
+    "dev": "npm run services:up && nodemon src/index.ts",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.5",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "@types/nodemailer": "^7.0.4",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "bullmq": "^5.65.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.11",
+    "zod": "^4.1.13"
+  }
+}
