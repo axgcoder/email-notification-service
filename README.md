@@ -30,7 +30,7 @@ The service follows an asynchronous, event-driven architecture to ensure reliabi
 
 1.  Clone the repository:
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/axgcoder/email-notification-service.git
     cd notification-service
     ```
 
